@@ -1,0 +1,143 @@
+//给img加版本号
+@mixin img-url($imgurl) {
+	background-image: url(#{$imgurl}?t=#{$cvs});
+}
+
+@mixin font-dpr($font-size) {
+	font-size: $font-size / 2;
+
+	[data-dpr="2"] & {
+		font-size: $font-size;
+	}
+
+	[data-dpr="3"] & {
+		font-size: $font-size / 2 * 3;
+	}
+}
+
+@mixin lh-dpr($line-height) {
+	line-height: $line-height / 2;
+
+	[data-dpr="2"] & {
+		line-height: $line-height;
+	}
+
+	[data-dpr="3"] & {
+		line-height: $line-height / 2 * 3;
+	}
+}
+
+// 垂直居中 
+@mixin middle($width, $height) {
+	width: $width;
+	height: $height;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: (- $width / 2);
+	margin-top: (- $height / 2);
+}
+
+// 多行文字垂直居中
+@mixin middle-box($boxWidth, $boxHeight) {
+	width: $boxWidth;
+	height: $boxHeight;
+	position: relative;
+	display: table;
+
+	.middle-inner {
+		display: table-cell;
+		vertical-align: middle;
+		text-align: center;
+
+		// ie6-7
+		@if $lte7 {
+			*position: absolute;
+			*top: 50%;
+			*left: 50%;
+
+			p {
+				position: relative;
+				*top: -50%;
+				*left: -50%;
+			}
+		}
+
+	}
+}
+
+// Triangle
+// v arrow 方向箭头
+@mixin v-arrow($direction: right, $borderWidth: 2px, $size: 20px) {
+  display: inline-block;
+  vertical-align: middle;
+  width: px2rem($size);
+  height: px2rem($size);
+
+  @if $direction==top {
+    border-top: px2rem($borderWidth) solid currentColor;
+    border-right: px2rem($borderWidth) solid currentColor;
+    transform: rotate(-45deg);
+  }
+
+  @else if $direction==right {
+    border-top: px2rem($borderWidth) solid currentColor;
+    border-right: px2rem($borderWidth) solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  @else if $direction==bottom {
+    border-left: px2rem($borderWidth) solid currentColor;
+    border-bottom: px2rem($borderWidth) solid currentColor;
+    transform: rotate(-45deg);
+  }
+
+  @if $direction==left {
+    border-left: px2rem($borderWidth) solid currentColor;
+    border-bottom: px2rem($borderWidth) solid currentColor;
+    transform: rotate(45deg);
+  }
+}
+
+// v triangle 方向箭头
+@mixin v-triangle($direction: right, $borderWidth: 8px) {
+  display: inline-block;
+  border: solid transparent;
+  border-width: px2rem($borderWidth);
+
+  @if $direction==top {
+		border-bottom-color: currentColor;
+		margin-top: px2rem(-8px);
+  }
+
+  @else if $direction==right {
+    border-left-color: currentColor;
+  }
+
+  @else if $direction==bottom {
+    border-top-color: currentColor;
+  }
+
+  @if $direction==left {
+    border-right-color: currentColor;
+  }
+}
+
+%ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 背景 除背景图片
+@mixin background-rest($size: 100% 100%, $position: center, $repeat: no-repeat) {
+  background-repeat: $repeat;
+  background-position: $position;
+  background-size: $size;
+}
+
+// 背景
+@mixin background($imgurl, $size: 100% 100%, $position: center, $repeat: no-repeat) {
+  @include img-url($imgurl);
+  @include background-rest($size, $position, $repeat)
+}
